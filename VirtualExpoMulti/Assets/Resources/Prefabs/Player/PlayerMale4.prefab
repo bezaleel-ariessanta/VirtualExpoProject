@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 803798610}
   - component: {fileID: 1314056036482676573}
   - component: {fileID: 5717448009803754377}
-  - component: {fileID: 1568391408562042405}
+  - component: {fileID: -2479503318301258979}
   m_Layer: 0
   m_Name: PlayerMale4
   m_TagString: Player
@@ -477,14 +477,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logLevel: 2
+  logLevel: 1
   ignoreGlobalLogLevel: 0
   recorderInUse: {fileID: 0}
   speakerInUse: {fileID: 3676611421222840186}
   AutoCreateRecorderIfNotFound: 0
   UsePrimaryRecorder: 1
   SetupDebugSpeaker: 0
---- !u!114 &1568391408562042405
+--- !u!114 &-2479503318301258979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -501,6 +501,7 @@ MonoBehaviour:
   micDisableImage: {fileID: 8982170089738742820}
   bufferLagText: {fileID: 3240151791804291425}
   photonVoiceView: {fileID: 5717448009803754377}
+  recorder: {fileID: 0}
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1209,8 +1210,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 5
+  MinDistance: 10
+  MaxDistance: 100
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
