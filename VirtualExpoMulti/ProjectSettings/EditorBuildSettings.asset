@@ -5,19 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LoginScene.unity
     guid: 470d6e4c2e340bd4b9aaafcab0ad49c1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainArea.unity
     guid: 05099c9d66251a94ea33f900418fc373
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainArea01.unity
     guid: 2c222c3fbd92e4b9ba8cfcc05380ba1f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LoadingScene.unity
     guid: f74b637bc27aaf64289671c92f8eb0c2
   - enabled: 0
     path: Assets/SDK/Photon/PhotonVoice/Demos/DemoVoicePun/DemoVoicePun-Scene.unity
     guid: a3f3c3b3816924199acba595045624d2
+  - enabled: 1
+    path: Assets/SDK/Photon/PhotonChat/Demos/DemoChat/DemoChat-Scene.unity
+    guid: ec07267f6a28fb044ac89845274e79af
   m_configObjects: {}
