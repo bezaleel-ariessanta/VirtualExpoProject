@@ -9,6 +9,7 @@ TagManager:
   - Teleporter
   - GFX
   - VoiceChatManager
+  - ChatManager
   layers:
   - Default
   - TransparentFX
