@@ -61,7 +61,7 @@ namespace VirtualExpo.MainArea.PlayerUIVoice
 
                 //if user pressed "V" on Keyboard
                 //then enable the TransmitEnabled
-                if (Input.GetKey(KeyCode.V))
+                if (Input.GetKey(PlayerControllerConstant.ACTIVE_MIC_KEY))
                 {
 
                     recorder.TransmitEnabled = true;

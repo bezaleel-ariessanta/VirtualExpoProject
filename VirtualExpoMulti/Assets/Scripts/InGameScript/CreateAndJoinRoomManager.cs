@@ -214,7 +214,14 @@ namespace VirtualExpo.MainArea.RoomManager
 
             isJoinedroom = true;
 
-            spManager.SpawningPlayerNow();
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+
+                spManager.SpawningPlayerNow();
+
+            }
+
+            //else call disconnect and back to login form
 
         }
 
