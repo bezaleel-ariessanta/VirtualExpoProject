@@ -406,6 +406,7 @@ MonoBehaviour:
   playerController: {fileID: 7574392643382367762}
   playerCam: {fileID: 1239106215}
   cinemaMachineComponent: {fileID: 7574392643609053721}
+  chattingManager: {fileID: 0}
   groundCheck: {fileID: 7574392643415620234}
   groundMask:
     serializedVersion: 2

@@ -12,6 +12,8 @@ using VirtualExpo.MainArea.PlayerUICustomized;
 using Photon.Pun;
 using Photon.Realtime;
 
+using VirtualExpo.Player.UIChat;
+
 
 namespace VirtualExpo.Player
 {
@@ -36,6 +38,7 @@ namespace VirtualExpo.Player
 
         [SerializeField] private Transform playerCam;
         [SerializeField] private GameObject cinemaMachineComponent;
+        [SerializeField] private PlayerChatMassage chattingManager;
 
         private float turnSmoothTime;
         private float turnSmoothVelocity;
@@ -82,7 +85,8 @@ namespace VirtualExpo.Player
             DontDestroyOnLoad(this.gameObject);
 
             anim = this.GetComponentInChildren<Animator>();
-            photonView.ObservedComponents.Add(anim.GetComponent<PhotonAnimatorView>());
+            chattingManager = GameObject.FindGameObjectWithTag("ChatManager").GetComponent<PlayerChatMassage>();
+            //photonView.ObservedComponents.Add(anim.GetComponent<PhotonAnimatorView>());
 
         }
 
@@ -95,6 +99,29 @@ namespace VirtualExpo.Player
         }
 
         #endregion
+
+        void PhotonViewDetection()
+        {
+
+            if (!photonView.IsMine && PhotonNetwork.IsConnected)
+            {
+                playerCam.gameObject.SetActive(false);
+                cinemaMachineComponent.SetActive(false);
+                return;
+            }
+            else
+            {
+                playerCam.gameObject.SetActive(true);
+                cinemaMachineComponent.SetActive(true);
+
+                if (!chattingManager.isActived)
+                {
+                    MovementWalk(walkSpeed);
+                }
+
+            }
+
+        }
 
         #region Player Transform / Movement Method(s)
 
@@ -118,8 +145,8 @@ namespace VirtualExpo.Player
             playerController.Move(velocity * Time.deltaTime);
 
             //Get Horizontal & Vertical Input
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis(PlayerControllerConstant.GET_AXIS_HORIZONTAL);
+            verticalInput = Input.GetAxis(PlayerControllerConstant.GET_AXIS_VERTICAL);
 
             //Walk / Run Animation
             WalkAnimation(horizontalInput, verticalInput);
@@ -146,7 +173,7 @@ namespace VirtualExpo.Player
         void Jumping(float jumpPower, float playerGrafity)
         {
 
-            if (Input.GetButtonDown("Jump") && isGrounded)
+            if (Input.GetButtonDown(PlayerControllerConstant.GET_BUTTON_DOWN_JUMP) && isGrounded)
             {
                 velocity.y = Mathf.Sqrt(jumpPower * -2 * playerGrafity);
 
@@ -202,27 +229,7 @@ namespace VirtualExpo.Player
 
         }
 
-        void PhotonViewDetection()
-        {
-
-            if (!photonView.IsMine && PhotonNetwork.IsConnected)
-            {
-                playerCam.gameObject.SetActive(false);
-                cinemaMachineComponent.SetActive(false);
-                return;
-            }
-            else
-            {
-                playerCam.gameObject.SetActive(true);
-                cinemaMachineComponent.SetActive(true);
-                MovementWalk(walkSpeed);
-            }
-
-        }
-
         #endregion
-
-
 
         #region Photon Pun IPunObservable Implementation
 
