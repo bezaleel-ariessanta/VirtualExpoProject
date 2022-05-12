@@ -85,7 +85,7 @@ namespace VirtualExpo.Player
             DontDestroyOnLoad(this.gameObject);
 
             anim = this.GetComponentInChildren<Animator>();
-            chattingManager = GameObject.FindGameObjectWithTag("ChatManager").GetComponent<PlayerChatMassage>();
+            chattingManager = this.GetComponent<PlayerChatMassage>();
             //photonView.ObservedComponents.Add(anim.GetComponent<PhotonAnimatorView>());
 
         }
