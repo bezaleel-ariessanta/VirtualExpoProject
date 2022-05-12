@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-#if PHOTON_UNITY_NETWORKING
 using Photon.Pun;
-#endif
-using Photon.Chat;
 using Photon.Realtime;
-using AuthenticationValues = Photon.Chat.AuthenticationValues;
-using ExitGames.Client.Photon;
-
 
 namespace VirtualExpo.Player.UIChat
 {
@@ -25,31 +20,26 @@ namespace VirtualExpo.Player.UIChat
     /// - NeonYellow : Ping Connection (#FFF01F)
     /// - Snow : RoomUpdate
 
-    public class PlayerChatMassage : MonoBehaviour, IChatClientListener
+    public class PlayerChatMassage : MonoBehaviourPunCallbacks
     {
 
         #region Variable
 
         #region Public Variable
         [Header("UI")]
-        public ChatClient chatClient;
-        public GameObject chatUIGameObject;
-        public TMP_InputField InputFieldChat;   // set in inspector
-        public TMP_Text CurrentChannelText;     // set in inspector
-
-        [Header("Public Variables")]
-        public int maximumMessages; // set in inspector
+        public GameObject chatInputUI;
+        public GameObject bubleSpeachUI;
+        public TMP_InputField InputFieldChat;   
+        public TMP_Text updatedText;
 
         #endregion
 
         #region Private Variable
         [Space(5)]
         [Header("Private and Internal Variables")]
+        private PlayerMovement playerMovement;
         private PhotonView pv;
         private string newMessage = "";
-
-        [SerializeField]
-        private List<string> _messages = new List<string>();
 
         [SerializeField]
         internal string userName { get; private set; }
@@ -69,27 +59,17 @@ namespace VirtualExpo.Player.UIChat
         private void Awake()
         {
 
-            this.chatUIGameObject.SetActive(false);
+            chatInputUI.SetActive(false);
 
-            //photon chat connection
-            this.chatClient = new ChatClient(this);
-            if (PhotonNetwork.IsConnectedAndReady)
-            {
-                userName = PhotonNetwork.LocalPlayer.NickName;
-            }
-            ConnectToPhotonChat();
+            playerMovement = this.GetComponent<PlayerMovement>();
+            pv = this.GetComponent<PhotonView>();
 
-            if (pv == null)
-            {
-
-                this.pv = this.GetComponent<PhotonView>();
-            }
+            bubleSpeachUI.SetActive(false);
 
         }
 
         private void Update()
         {
-            this.chatClient.Service();// make sure to call this regularly! it limits effort internally, so calling often is ok!
 
             ChatController();
 
@@ -97,41 +77,38 @@ namespace VirtualExpo.Player.UIChat
 
         #endregion
 
-        void ConnectToPhotonChat()
-        {
-
-            //making connection to photon server
-            Debug.Log("<color=#FFF01F> Connecting to Photon Chat </color>");
-            chatClient.AuthValues = new Photon.Chat.AuthenticationValues(userName);
-            chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(userName));
-
-        }
+        #region Input Action
 
         private void ChatController()
         {
 
-            if (Input.GetKeyDown(PlayerControllerConstant.ACTIVE_CHAT_MESSAGE_KEY))
+            if (pv.IsMine)
             {
 
-                isActived = !isActived;
-
-            }
-
-            this.chatUIGameObject.SetActive(isActived);
-
-            if (isActived)
-            {
-
-                switch (this.isEnterSend)
+                if (Input.GetKeyDown(PlayerControllerConstant.ACTIVE_CHAT_MESSAGE_KEY))
                 {
 
-                    case true:
-                        OnEnterSend();
-                        break;
+                    isActived = !isActived;
 
-                    case false:
-                        OnShiftEnterSend();
-                        break;
+                }
+
+                chatInputUI.SetActive(isActived);
+
+                if (isActived)
+                {
+
+                    switch (isEnterSend)
+                    {
+
+                        case true:
+                            OnEnterSend();
+                            break;
+
+                        case false:
+                            OnShiftEnterSend();
+                            break;
+
+                    }
 
                 }
 
@@ -165,10 +142,12 @@ namespace VirtualExpo.Player.UIChat
 
         }
 
+        #endregion
+
         public void OnClickSend()
         {
 
-            newMessage = this.InputFieldChat.text;
+            newMessage = InputFieldChat.text;
 
             if (newMessage == "")
             {
@@ -177,86 +156,51 @@ namespace VirtualExpo.Player.UIChat
             else
             {
 
-                SendChatMessage(newMessage);
-                this.InputFieldChat.text = "";
+                //call method send chat message Pun RPC
+                pv.RPC("SendChatMessage", RpcTarget.AllBuffered, newMessage);
+                InputFieldChat.text = "";
 
             }
 
         }
 
+        [PunRPC]
         private void SendChatMessage(string inputLine)
         {
 
             //show in local chat log
-            CurrentChannelText.text += "\n" + userName + " : " + inputLine;
-            _messages.Add(newMessage);
-            if (_messages.Count >= maximumMessages)
-            {
-                _messages.Remove(_messages[0]);
-            }
+            updatedText.text = "<color=#39ff14>" + userName + " : </color>" + inputLine;
 
-            //send the new message to network
+            bubleSpeachUI.SetActive(true);
+
+            StartCoroutine(RemoveText());
 
         }
 
+        IEnumerator RemoveText()
+        {
+            yield return new WaitForSeconds(4f);
+            bubleSpeachUI.SetActive(false);
+        }
 
         #endregion
 
-        #region IChatClientListener implementation
 
-        void IChatClientListener.DebugReturn(DebugLevel level, string message)
-        {
-            
-        }
+        #region IPunObservable implementation
 
-        void IChatClientListener.OnDisconnected()
-        {
-            Debug.Log("<color=#FFA500>Disconnected To Photon Chat</color>");
-        }
 
-        void IChatClientListener.OnConnected()
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            Debug.Log("<color=#87ceeb>Connected To Photon Chat</color>");
-        }
 
-        void IChatClientListener.OnChatStateChange(ChatState state)
-        {
-            
-        }
+            if (stream.IsWriting)
+            {
+                stream.SendNext(bubleSpeachUI.active);
+            }
+            else if(stream.IsReading)
+            {
+                bubleSpeachUI.SetActive((bool)stream.ReceiveNext());
+            }
 
-        void IChatClientListener.OnGetMessages(string channelName, string[] senders, object[] messages)
-        {
-            
-        }
-
-        void IChatClientListener.OnPrivateMessage(string sender, object message, string channelName)
-        {
-            
-        }
-
-        void IChatClientListener.OnSubscribed(string[] channels, bool[] results)
-        {
-            
-        }
-
-        void IChatClientListener.OnUnsubscribed(string[] channels)
-        {
-            
-        }
-
-        void IChatClientListener.OnStatusUpdate(string user, int status, bool gotMessage, object message)
-        {
-            
-        }
-
-        void IChatClientListener.OnUserSubscribed(string channel, string user)
-        {
-            
-        }
-
-        void IChatClientListener.OnUserUnsubscribed(string channel, string user)
-        {
-            
         }
 
 
