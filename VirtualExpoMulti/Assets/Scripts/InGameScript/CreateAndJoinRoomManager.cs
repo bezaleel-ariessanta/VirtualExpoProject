@@ -36,6 +36,7 @@ namespace VirtualExpo.MainArea.RoomManager
 
         RoomListManager roomListManager;
         SpawnManager spManager;
+        public GameObject disconnectedPopUpUI;
 
         #endregion
 
@@ -99,6 +100,8 @@ namespace VirtualExpo.MainArea.RoomManager
             {
                 JoinRoom();
             }
+
+            disconnectedPopUpUI.SetActive(false);
 
         }
 
@@ -194,7 +197,30 @@ namespace VirtualExpo.MainArea.RoomManager
 
         #endregion
 
+        public void ReconectButton()
+        {
 
+            //if press yes than reconnect and rejoin the room
+            PhotonNetwork.ReconnectAndRejoin();
+
+        }
+
+        public void DisconnectButton()
+        {
+
+            if (PhotonNetwork.InRoom)
+            {
+
+                isLeftRoom = true;
+                PhotonNetwork.LeaveRoom();
+
+            }
+            else
+            {
+                PhotonNetwork.Disconnect();
+            }
+
+        }
 
         #endregion
 
@@ -220,8 +246,15 @@ namespace VirtualExpo.MainArea.RoomManager
                 spManager.SpawningPlayerNow();
 
             }
+            else
+            {
 
-            //else call disconnect and back to login form
+                //else show pop up windows
+                disconnectedPopUpUI.SetActive(true);
+
+            }
+
+
 
         }
 
@@ -243,7 +276,9 @@ namespace VirtualExpo.MainArea.RoomManager
 
             if (isLeftRoom)
             {
-                //back to launcher
+                //back to launcher and disconnect the network
+                PhotonNetwork.Disconnect();
+                PhotonNetwork.LoadLevel("LoginScene");
             }
 
         }
@@ -252,7 +287,7 @@ namespace VirtualExpo.MainArea.RoomManager
         public override void OnDisconnected(DisconnectCause cause)
         {
 
-            Debug.Log("<color=#FFA500>You has been disconnected from server!</color>");
+            Debug.Log("<color=#FFA500>You has been disconnected from server!</color> \n Cause : " + cause);
 
         }
 
