@@ -1,0 +1,4 @@
+repository "VirtualExpo@WideTechnologiesIndonesia@cloud"
+  path "/"
+    br "/main"
+    co "/main"

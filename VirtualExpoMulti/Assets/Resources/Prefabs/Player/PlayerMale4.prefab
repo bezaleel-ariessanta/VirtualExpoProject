@@ -522,7 +522,10 @@ MonoBehaviour:
   bubleSpeachUI: {fileID: 3843781938008475117}
   InputFieldChat: {fileID: 4326313306358050647}
   updatedText: {fileID: 8751541594523898008}
+  channelChatText: {fileID: 5808610293155650932}
+  maxMessages: 15
   isEnterSend: 1
+  allMessages: []
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,6 +1415,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3880955633056259674}
     m_Modifications:
+    - target: {fileID: 4375373154329602019, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8729960896140844493, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1519,6 +1526,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5808610293155650932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6810859244109695977, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+  m_PrefabInstance: {fileID: 1015944538996364957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8213019019239971155 stripped

@@ -522,7 +522,10 @@ MonoBehaviour:
   bubleSpeachUI: {fileID: 436330627048170172}
   InputFieldChat: {fileID: 2552328134162506726}
   updatedText: {fileID: 5344167042935011273}
+  channelChatText: {fileID: 5763978210538803653}
+  maxMessages: 15
   isEnterSend: 1
+  allMessages: []
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,6 +1337,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3880955633056259674}
     m_Modifications:
+    - target: {fileID: 4375373154329602019, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810859244109695977, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 1024
+      objectReference: {fileID: 0}
     - target: {fileID: 8729960896140844493, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1342,9 +1353,13 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickSend
       objectReference: {fileID: 0}
+    - target: {fileID: 8960571749594563975, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9215452684397159489, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9215452686130024394, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_Name
@@ -1445,6 +1460,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5763978210538803653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6810859244109695977, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
+  m_PrefabInstance: {fileID: 1258980127251487276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7969988863909877218 stripped
