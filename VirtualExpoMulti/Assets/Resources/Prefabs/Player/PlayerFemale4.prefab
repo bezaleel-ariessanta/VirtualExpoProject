@@ -525,7 +525,6 @@ MonoBehaviour:
   channelChatText: {fileID: 5763978210538803653}
   maxMessages: 15
   isEnterSend: 1
-  allMessages: []
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9215452684397159489, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9215452686130024394, guid: cc767d940cdb84df693459ff34223a6f, type: 3}
       propertyPath: m_Name
