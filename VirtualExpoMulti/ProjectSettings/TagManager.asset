@@ -10,6 +10,7 @@ TagManager:
   - GFX
   - VoiceChatManager
   - ChatManager
+  - Speaker
   layers:
   - Default
   - TransparentFX

@@ -73,11 +73,6 @@ namespace VirtualExpo.Player.UIChat
 
             bubleSpeachUI.SetActive(false);
 
-            if (PhotonNetwork.InRoom)
-            {
-                userName = PhotonNetwork.LocalPlayer.NickName; 
-            }
-
         }
 
         private void Update()
@@ -107,6 +102,7 @@ namespace VirtualExpo.Player.UIChat
                 }
 
                 chatInputUI.SetActive(isActived);
+                InputFieldChat.ActivateInputField();
 
                 if (isActived)
                 {
@@ -165,6 +161,7 @@ namespace VirtualExpo.Player.UIChat
 
             if (newMessage == "")
             {
+                InputFieldChat.ActivateInputField();
                 return;
             }
             else
@@ -173,9 +170,11 @@ namespace VirtualExpo.Player.UIChat
                 //call method send chat message Pun RPC
                 pv.RPC("SendChatMessage", RpcTarget.AllBuffered, newMessage);
 
+                userName = PhotonNetwork.NickName;
                 string newMsg = userName + " : " + newMessage;
-                pv.RPC("RPCAddNewMessage", RpcTarget.All, newMsg);
+                pv.RPC("RPCAddNewMessage", RpcTarget.AllBufferedViaServer, newMsg);
 
+                InputFieldChat.ActivateInputField();
                 InputFieldChat.text = "";
 
             }
