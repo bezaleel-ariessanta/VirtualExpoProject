@@ -505,7 +505,7 @@ MonoBehaviour:
   micDisableImage: {fileID: 319813079591530791}
   bufferLagText: {fileID: 6061973421128975458}
   photonVoiceView: {fileID: 1895040408258384442}
-  playerAudio: {fileID: 0}
+  recorder: {fileID: 0}
 --- !u!114 &764931564460774491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,7 +525,6 @@ MonoBehaviour:
   channelChatText: {fileID: 9177024024098706969}
   maxMessages: 15
   isEnterSend: 1
-  allMessages: []
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0

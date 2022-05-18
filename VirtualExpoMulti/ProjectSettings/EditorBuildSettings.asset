@@ -17,10 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: f74b637bc27aaf64289671c92f8eb0c2
-  - enabled: 0
-    path: Assets/SDK/Photon/PhotonVoice/Demos/DemoVoicePun/DemoVoicePun-Scene.unity
-    guid: a3f3c3b3816924199acba595045624d2
-  - enabled: 0
-    path: Assets/SDK/Photon/PhotonChat/Demos/DemoChat/DemoChat-Scene.unity
-    guid: ec07267f6a28fb044ac89845274e79af
   m_configObjects: {}
