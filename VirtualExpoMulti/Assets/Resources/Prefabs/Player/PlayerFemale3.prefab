@@ -525,7 +525,6 @@ MonoBehaviour:
   channelChatText: {fileID: 8919138842306819717}
   maxMessages: 15
   isEnterSend: 1
-  allMessages: []
 --- !u!1 &4151771785049708963
 GameObject:
   m_ObjectHideFlags: 0
