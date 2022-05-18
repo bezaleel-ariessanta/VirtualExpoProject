@@ -32,6 +32,8 @@ namespace VirtualExpo.MainArea.PlayerUIVoice
 
         private PhotonView PV;
 
+        private bool isActived = false;
+
         [SerializeField]
         private Recorder recorder;
 
@@ -64,18 +66,17 @@ namespace VirtualExpo.MainArea.PlayerUIVoice
                 if (Input.GetKey(PlayerControllerConstant.ACTIVE_MIC_KEY))
                 {
 
-                    recorder.TransmitEnabled = true;
-                    OnUpdateMicEvent();
-                    this.micDisableImage.enabled = !recorder.TransmitEnabled;
+                    isActived = true;
 
                 }
                 else
                 {
 
-                    recorder.TransmitEnabled = false;
-                    this.micDisableImage.enabled = !recorder.TransmitEnabled;
+                    isActived = false;
 
                 }
+
+                IsMicActive(isActived);
 
             }
             else
@@ -84,6 +85,17 @@ namespace VirtualExpo.MainArea.PlayerUIVoice
                 this.micDisableImage.enabled = false;
 
             }
+
+        }
+
+        private void IsMicActive(bool active)
+        {
+
+            this.recorder.TransmitEnabled = active;
+            //recorder.IsRecording = active;
+
+            OnUpdateMicEvent();
+            this.micDisableImage.enabled = !active;
 
         }
 

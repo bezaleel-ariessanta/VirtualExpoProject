@@ -32,6 +32,10 @@ namespace VirtualExpo.Player.UIChat
         public TMP_InputField InputFieldChat;   
         public TMP_Text updatedText;
 
+        [Header("Chat Message List")]
+        public TextMeshProUGUI channelChatText;
+        public int maxMessages = 15;
+
         #endregion
 
         #region Private Variable
@@ -46,7 +50,10 @@ namespace VirtualExpo.Player.UIChat
         internal bool isActived { get; private set; }
         [SerializeField]
         internal bool isEnterSend = false;
-        
+
+        private float buildDelay = 0f;
+        [SerializeField]
+        private List<string> allMessages = new List<string>();
 
         #endregion
 
@@ -73,6 +80,8 @@ namespace VirtualExpo.Player.UIChat
 
             ChatController();
 
+            UpdateChatMessageContent();
+
         }
 
         #endregion
@@ -93,6 +102,7 @@ namespace VirtualExpo.Player.UIChat
                 }
 
                 chatInputUI.SetActive(isActived);
+                InputFieldChat.ActivateInputField();
 
                 if (isActived)
                 {
@@ -151,6 +161,7 @@ namespace VirtualExpo.Player.UIChat
 
             if (newMessage == "")
             {
+                InputFieldChat.ActivateInputField();
                 return;
             }
             else
@@ -158,9 +169,52 @@ namespace VirtualExpo.Player.UIChat
 
                 //call method send chat message Pun RPC
                 pv.RPC("SendChatMessage", RpcTarget.AllBuffered, newMessage);
+
+                userName = PhotonNetwork.NickName;
+                string newMsg = userName + " : " + newMessage;
+                pv.RPC("RPCAddNewMessage", RpcTarget.AllBufferedViaServer, newMsg);
+
+                InputFieldChat.ActivateInputField();
                 InputFieldChat.text = "";
 
             }
+
+        }
+
+        void UpdateChatMessageContent()
+        {
+
+            if (PhotonNetwork.InRoom && PhotonNetwork.IsConnectedAndReady)
+            {
+
+                channelChatText.maxVisibleLines = maxMessages;
+
+                if (allMessages.Count > maxMessages)
+                {
+                    allMessages.RemoveAt(0);
+                }
+
+                BuildTextContents();
+
+            }
+            else if (allMessages.Count > 0)
+            {
+                allMessages.Clear();
+                channelChatText.text = "";
+            }
+
+        }
+
+        void BuildTextContents()
+        {
+
+            string newTextContents = "";
+            foreach (string msg in allMessages)
+            {
+                newTextContents += msg + "\n";
+            }
+
+            channelChatText.text = newTextContents;
 
         }
 
@@ -168,12 +222,19 @@ namespace VirtualExpo.Player.UIChat
         private void SendChatMessage(string inputLine)
         {
 
-            //show in local chat log
-            updatedText.text = "<color=#39ff14>" + userName + " : </color>" + inputLine;
+            updatedText.text = inputLine;
 
             bubleSpeachUI.SetActive(true);
 
             StartCoroutine(RemoveText());
+
+        }
+
+        [PunRPC]
+        void RPCAddNewMessage(string msg)
+        {
+
+            allMessages.Add(msg);
 
         }
 

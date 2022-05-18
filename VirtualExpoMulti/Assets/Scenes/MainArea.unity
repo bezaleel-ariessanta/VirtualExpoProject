@@ -774,14 +774,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: VoiceManager
       objectReference: {fileID: 0}
-    - target: {fileID: 7348194639690258991, guid: d994904336f3242cebcfced50ce2215d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7348194639690259028, guid: d994904336f3242cebcfced50ce2215d, type: 3}
-      propertyPath: reactOnSystemChanges
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d994904336f3242cebcfced50ce2215d, type: 3}
 --- !u!1001 &6386944939868230862

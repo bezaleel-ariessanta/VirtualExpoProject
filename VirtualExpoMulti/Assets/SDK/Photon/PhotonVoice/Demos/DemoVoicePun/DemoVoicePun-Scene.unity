@@ -6095,5 +6095,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Voice
       objectReference: {fileID: 0}
+    - target: {fileID: 7348194639690259029, guid: d994904336f3242cebcfced50ce2215d, type: 3}
+      propertyPath: updateInterval
+      value: -158
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d994904336f3242cebcfced50ce2215d, type: 3}
