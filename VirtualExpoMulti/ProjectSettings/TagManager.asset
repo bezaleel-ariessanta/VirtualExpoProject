@@ -11,6 +11,7 @@ TagManager:
   - VoiceChatManager
   - ChatManager
   - Speaker
+  - GameManager
   layers:
   - Default
   - TransparentFX

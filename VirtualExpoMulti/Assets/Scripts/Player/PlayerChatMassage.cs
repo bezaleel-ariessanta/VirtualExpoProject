@@ -9,6 +9,8 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
+using ChatListDump;
+
 namespace VirtualExpo.Player.UIChat
 {
 
@@ -41,7 +43,7 @@ namespace VirtualExpo.Player.UIChat
         #region Private Variable
         [Space(5)]
         [Header("Private and Internal Variables")]
-        private PlayerMovement playerMovement;
+        //private PlayerMovement playerMovement;
         private PhotonView pv;
         private string newMessage = "";
 
@@ -52,8 +54,9 @@ namespace VirtualExpo.Player.UIChat
         internal bool isEnterSend = false;
 
         private float buildDelay = 0f;
-        [SerializeField]
-        private List<string> allMessages = new List<string>();
+        //[SerializeField]
+        //private List<string> allMessages = new List<string>();
+        private ChatListManager getChatListManager;
 
         #endregion
 
@@ -68,8 +71,9 @@ namespace VirtualExpo.Player.UIChat
 
             chatInputUI.SetActive(false);
 
-            playerMovement = this.GetComponent<PlayerMovement>();
-            pv = this.GetComponent<PhotonView>();
+            //playerMovement = this.GetComponent<PlayerMovement>();
+            getChatListManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ChatListManager>();
+            pv = GetComponent<PhotonView>();
 
             bubleSpeachUI.SetActive(false);
 
@@ -170,51 +174,16 @@ namespace VirtualExpo.Player.UIChat
                 //call method send chat message Pun RPC
                 pv.RPC("SendChatMessage", RpcTarget.AllBuffered, newMessage);
 
+                //call method that send chat to public list message
                 userName = PhotonNetwork.NickName;
                 string newMsg = userName + " : " + newMessage;
                 pv.RPC("RPCAddNewMessage", RpcTarget.AllBufferedViaServer, newMsg);
 
+                //focus to input field and empty the input field
                 InputFieldChat.ActivateInputField();
                 InputFieldChat.text = "";
 
             }
-
-        }
-
-        void UpdateChatMessageContent()
-        {
-
-            if (PhotonNetwork.InRoom && PhotonNetwork.IsConnectedAndReady)
-            {
-
-                channelChatText.maxVisibleLines = maxMessages;
-
-                if (allMessages.Count > maxMessages)
-                {
-                    allMessages.RemoveAt(0);
-                }
-
-                BuildTextContents();
-
-            }
-            else if (allMessages.Count > 0)
-            {
-                allMessages.Clear();
-                channelChatText.text = "";
-            }
-
-        }
-
-        void BuildTextContents()
-        {
-
-            string newTextContents = "";
-            foreach (string msg in allMessages)
-            {
-                newTextContents += msg + "\n";
-            }
-
-            channelChatText.text = newTextContents;
 
         }
 
@@ -230,18 +199,56 @@ namespace VirtualExpo.Player.UIChat
 
         }
 
-        [PunRPC]
-        void RPCAddNewMessage(string msg)
-        {
-
-            allMessages.Add(msg);
-
-        }
-
         IEnumerator RemoveText()
         {
             yield return new WaitForSeconds(4f);
             bubleSpeachUI.SetActive(false);
+        }
+
+
+        [PunRPC]
+        void RPCAddNewMessage(string msg)
+        {
+
+            getChatListManager.messages.Add(msg);
+
+        }
+
+        void UpdateChatMessageContent()
+        {
+
+            if (PhotonNetwork.InRoom && PhotonNetwork.IsConnectedAndReady)
+            {
+
+                channelChatText.maxVisibleLines = maxMessages;
+
+                if (getChatListManager.messages.Count > maxMessages)
+                {
+                    getChatListManager.messages.RemoveAt(0);
+                }
+
+                BuildTextContents();
+
+            }
+            else if (getChatListManager.messages.Count > 0)
+            {
+                getChatListManager.messages.Clear();
+                channelChatText.text = "";
+            }
+
+        }
+
+        void BuildTextContents()
+        {
+
+            string newTextContents = "";
+            foreach (string msg in getChatListManager.messages)
+            {
+                newTextContents += msg + "\n";
+            }
+
+            channelChatText.text = newTextContents;
+
         }
 
         #endregion
